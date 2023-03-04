@@ -66,7 +66,7 @@ const Forecast: React.FC = () => {
           </AddressInputContainer>
 
           <ButtonSumit type='submit' isLoading={isLoading} disabled={isLoading}>
-            {isLoading ? <FaSpinner/> : <span>Submit</span>}
+            {isLoading ? <FaSpinner title='Loading weather forecast'/> : <span>Submit</span>}
           </ButtonSumit>
         </form>
       </FormContainer>
