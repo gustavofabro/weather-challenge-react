@@ -2,7 +2,7 @@ import { WeatherForecastPeriod } from 'domain/weather-forecast-period.model';
 import { WeatherForecast } from 'domain/weather-forecast.model';
 import { GridPoints } from 'domain/weather-grid-points.model';
 import { isSameDate } from 'util/date-helper';
-import { truncDecimal } from '../../util/number-helper';
+import { truncDecimal } from 'util/number-helper';
 import api from './us-weather.api';
 
 export interface WeatherForecastResult {
