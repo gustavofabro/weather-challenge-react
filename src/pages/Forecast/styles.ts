@@ -8,8 +8,16 @@ export const Container = styled.article`
   flex-direction: column;
   align-items: center;
   padding: 50px;
+  background: linear-gradient(90deg, #7474BF 10%, #348AC7 90%);
+  min-height: 100vh;
 
-  @media (max-width: 500px) {
+  h1 {
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 34px;
+  }
+
+  @media (max-width: 550px) {
     padding: 20px;
   }
 `;
@@ -22,9 +30,11 @@ export const FormContainer = styled.section`
     flex-direction: column;
     align-items: center;
     flex: 1;
+    padding: 5px 15px;
+    border-radius: 4px;
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 550px) {
     width: 100%;
   }
 `;
@@ -38,13 +48,18 @@ export const AddressInputContainer = styled.div<{ hasError?: boolean }>`
   input {
     padding: 10px;
     border-radius: 4px;
-    border: 1px solid #737373;
+    border: 0;
     width: 100%
   }
 
   span[role='alert'] {
+    border: 1px solid #bb0000;
+    border-radius: 4px;
+    background: #cc0000;
+    color: #FFFFFf;
+    padding: 5px 10px;
     margin-top: 5px;
-    color: #FF3333;
+    font-size: 16px;
   }
 
   ${props => props.hasError && css`
@@ -81,7 +96,7 @@ export const ButtonSumit = styled.button<{ isLoading: boolean}>`
     cursor: auto;
   `}
 
-  @media (max-width: 500px) {
+  @media (max-width: 550px) {
     padding: 10px;
     width: 100%;
     margin-left: 0;
