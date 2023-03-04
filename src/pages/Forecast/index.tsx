@@ -2,9 +2,12 @@ import React, { FormEvent, useState } from 'react';
 import { getAdressLatLong } from 'services/geocoding-census';
 import { AddressInputContainer, ButtonSumit, Container, FormContainer } from './styles';
 import { FaSpinner } from 'react-icons/fa';
+import { AddresLatLong } from 'domain/addres-lat-long.model';
+import WeatherForecastList from 'components/WeatherForecastList';
 
 const Forecast: React.FC = () => {
   const [address, setAddress] = useState<string>('500 Yale Avenue North, Seattle, WA 98109');
+  const [addressLatLong, setAddressLatLong] = useState<AddresLatLong | null>(null);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [addressNotFound, setAddressNotFound] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,6 +20,7 @@ const Forecast: React.FC = () => {
       return;
     }
 
+    setAddressLatLong(null);
     setIsLoading(true);
     handlGetWeatherForecast(address)
       .finally(() => setIsLoading(false));
@@ -29,6 +33,8 @@ const Forecast: React.FC = () => {
       setAddressNotFound(true);
       return;
     }
+
+    setAddressLatLong(latLongInfo);
   }
 
   function isFormValid(): boolean {
@@ -64,6 +70,10 @@ const Forecast: React.FC = () => {
           </ButtonSumit>
         </form>
       </FormContainer>
+
+      {addressLatLong &&
+        <WeatherForecastList latLong={addressLatLong} ></WeatherForecastList>
+      }
     </Container>
   );
 };
