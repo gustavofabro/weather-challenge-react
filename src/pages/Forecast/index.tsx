@@ -59,7 +59,7 @@ const Forecast: React.FC = () => {
               }}
               maxLength={100}
               value={address}
-              placeholder='Type your complete address ' />
+              placeholder='Type your complete address (street, city, state, zip) ' />
 
             {inputHasError(address) && <span role='alert'>Required field</span>}
             {!inputHasError(address) && addressNotFound && <span role='alert'>Address not found, please make sure you typed it correctly</span>}
