@@ -1,6 +1,7 @@
 import { WeatherForecastPeriod } from 'domain/weather-forecast-period.model';
 import { WeatherForecast } from 'domain/weather-forecast.model';
 import { GridPoints } from 'domain/weather-grid-points.model';
+import { getGridPointsLocalStorage, saveGridPointsLocalStorage } from 'services/gridpoints-local-cache';
 import { isSameDate } from 'util/date-helper';
 import { truncDecimal } from 'util/number-helper';
 import api from './us-weather.api';
@@ -16,19 +17,22 @@ async function getForecastFromLatLong(lat: number, lng: number): Promise<Weather
   return getForecastForNextWeekGrouped(forecast);
 }
 
-// TODO: Create cache for lat/long
 function getLatLongGridPoints(lat: number, lng: number): Promise<GridPoints> {
   const latTruncated = truncDecimal(lat);
-  const lngTruncated = truncDecimal(lng);
+  const longTruncated = truncDecimal(lng);
+  const cachedGridPoints = getGridPointsLocalStorage({ lat: latTruncated, lng: longTruncated });
 
-  return api.get<{properties: GridPoints}>(`points/${latTruncated},${lngTruncated}`).then(response => {
+  if (cachedGridPoints) {
+    return Promise.resolve(cachedGridPoints);
+  }
+
+  return api.get<{properties: GridPoints}>(`points/${latTruncated},${longTruncated}`).then(response => {
     const { gridId, gridX, gridY } = response.data.properties;
+    const gridPoints= { gridId, gridX, gridY };
 
-    return {
-      gridId,
-      gridX,
-      gridY
-    };
+    saveGridPointsLocalStorage({ lat: latTruncated, lng: longTruncated }, gridPoints);
+
+    return gridPoints;
   });
 }
 
