@@ -36,7 +36,8 @@ const weatherForecasts: WeatherForecast[] = [{
     windSpeed: '10 to 15 mph',
     windDirection: WindDirection.E,
     shortForecast: 'Sunny',
-    detailedForecast: 'Sunny, with a high near 69. South wind 10 to 15 mph, with gusts as high as 25 mph.'
+    detailedForecast: 'Sunny, with a high near 69. South wind 10 to 15 mph, with gusts as high as 25 mph.',
+    icon: 'https://some-image.com'
   }]
 }, {
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers
