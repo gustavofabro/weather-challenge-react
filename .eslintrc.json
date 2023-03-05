@@ -79,5 +79,8 @@
     ],
     "no-unused-vars": "off",
     "unused-imports/no-unused-imports": "warn"
-  }
+  },
+  "ignorePatterns": [
+    "**/*.spec.ts"
+  ]
 }
