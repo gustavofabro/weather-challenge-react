@@ -11,13 +11,13 @@ export interface WeatherForecastResult {
 }
 
 async function getForecastFromLatLong(lat: number, lng: number): Promise<WeatherForecast[]> {
-  const gridPoints = await getLatLongGridPoints(lat, lng);
-  const forecast = await getForecastFromGrid(gridPoints);
+  const gridPoints = await _getLatLongGridPoints(lat, lng);
+  const forecast = await _getForecastFromGrid(gridPoints);
 
-  return getForecastForNextWeekGrouped(forecast);
+  return _getForecastForNextWeekGrouped(forecast);
 }
 
-function getLatLongGridPoints(lat: number, lng: number): Promise<GridPoints> {
+function _getLatLongGridPoints(lat: number, lng: number): Promise<GridPoints> {
   const latTruncated = truncDecimal(lat);
   const longTruncated = truncDecimal(lng);
   const cachedGridPoints = getGridPointsLocalStorage({ lat: latTruncated, lng: longTruncated });
@@ -36,7 +36,7 @@ function getLatLongGridPoints(lat: number, lng: number): Promise<GridPoints> {
   });
 }
 
-function getForecastFromGrid(gridPoints: { gridId: string, gridX: number, gridY: number }): Promise<WeatherForecastResult> {
+function _getForecastFromGrid(gridPoints: { gridId: string, gridX: number, gridY: number }): Promise<WeatherForecastResult> {
   return api
     .get<{ properties: WeatherForecastResult }>(`gridpoints/${gridPoints.gridId}/${gridPoints.gridX},${gridPoints.gridY}/forecast`)
     .then<WeatherForecastResult>(response => {
@@ -48,7 +48,7 @@ function getForecastFromGrid(gridPoints: { gridId: string, gridX: number, gridY:
   });
 }
 
-function getForecastForNextWeekGrouped(forecastResult: WeatherForecastResult): WeatherForecast[] {
+function _getForecastForNextWeekGrouped(forecastResult: WeatherForecastResult): WeatherForecast[] {
   const daysToGroup = 7;
   const nextWeekDays: Date[] = Array
     .from({ length: daysToGroup }, (_, index) => index)
