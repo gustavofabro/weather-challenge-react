@@ -1,3 +1,4 @@
+/* TODO: The same configuration should be done in the production build (e.g with nginx reverse proxy) */
 /* eslint-disable */
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
