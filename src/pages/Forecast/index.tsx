@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Container } from './styles';
 import { AddresLatLong } from 'domain/addres-lat-long.model';
 import WeatherForecastList from 'components/WeatherForecastList';
@@ -7,14 +7,14 @@ import FormAddress from 'components/FormAddress';
 const Forecast: React.FC = () => {
   const [addressLatLong, setAddressLatLong] = useState<AddresLatLong | null>(null);
 
-  function onFindAddress(addressLatLong: AddresLatLong | null): void {
+  const onFindAddress = useCallback((addressLatLong: AddresLatLong | null): void => {
     if (!addressLatLong) {
       setAddressLatLong(null);
       return;
     }
 
     setAddressLatLong(addressLatLong);
-  }
+  }, []);
 
   return (
     <Container>
