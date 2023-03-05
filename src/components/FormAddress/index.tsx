@@ -65,7 +65,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
       </AddressInputContainer>
 
       <ButtonSubmit type='submit' isLoading={isLoading} disabled={isLoading}>
-        {isLoading ? <FaSpinner title='Loading weather forecast'/> : <span>Submit</span>}
+        {isLoading ? <FaSpinner title='Searching address'/> : <span>Submit</span>}
       </ButtonSubmit>
     </Container>
   );
