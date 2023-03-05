@@ -51,6 +51,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
     <Container onSubmit={onSubmit}>
       <AddressInputContainer hasError={inputHasError(address)}>
         <input
+          data-testid="input-address"
           type="text"
           onChange={(e) => {
             setAddress(e.target.value);
@@ -64,7 +65,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
         {!inputHasError(address) && addressNotFound && <span role='alert'>Address not found, please make sure you typed it correctly</span>}
       </AddressInputContainer>
 
-      <ButtonSubmit type='submit' isLoading={isLoading} disabled={isLoading}>
+      <ButtonSubmit type='submit' isLoading={isLoading} disabled={isLoading} data-testid="button-submit">
         {isLoading ? <FaSpinner title='Searching address'/> : <span>Submit</span>}
       </ButtonSubmit>
     </Container>
