@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  front:
+    build:
+      context: ./.
+      dockerfile: containers/Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/workspace/react-challenge-weather
+  test:
+    profiles:
+      - test
+    stdin_open: true
+    tty: true
+    build:
+      context: ./.
+      dockerfile: containers/Dockerfile.dev-test
+    volumes:
+      - ./:/workspace/react-challenge-weather

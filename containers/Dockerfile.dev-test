@@ -1,0 +1,6 @@
+FROM node:14.17.0
+
+WORKDIR /workspace/react-challenge-weather
+
+# Perform project setup if node_modules does not exist on host
+CMD [ -d "node_modules" ] && npm test || npm install && npm test
