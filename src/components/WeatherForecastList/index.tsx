@@ -70,10 +70,10 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
 
               <WeatherInfoContainer>
                 {item.forecasts.map(dayPeriod =>(
+                  /* TODO: Split in separate component */
                   <DayPeriod key={dayPeriod.startTime}>
                     {
                       showPeriodOfDay(dayId, dayPeriod.startTime) &&
-                      <>
                         <WeatherInfo>
                           <ForecastMainInfo>
                             <span>{dayPeriod.temperature} °{dayPeriod.temperatureUnit}</span>
@@ -88,9 +88,7 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
                             <img src={dayPeriod.icon} alt="Forecast icon" aria-hidden/>
                             <p>{dayPeriod.shortForecast}</p>
                           </ForecastResume>
-
                         </WeatherInfo>
-                      </>
                     }
                   </DayPeriod>
                 ))}
