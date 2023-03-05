@@ -28,7 +28,7 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
 
     weatherForecasts?.forEach(item => {
       const dayId = item.date.toDateString();
-      defaultSelectedPeriods[dayId] = item.forecasts[0].startTime;
+      defaultSelectedPeriods[dayId] = item.forecasts[0]?.startTime;
     });
 
     setShowPeriodMap(defaultSelectedPeriods);
@@ -53,7 +53,7 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
           {weatherForecasts?.map(item => {
             const dayId = item.date.toDateString();
 
-            return <Card key={dayId}>
+            return <Card data-testid="weather-forescast-card" key={dayId}>
               <h2>
                 {maskDateToMonthDay(item.date)}
               </h2>
