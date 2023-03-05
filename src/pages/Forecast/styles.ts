@@ -17,7 +17,7 @@ export const Container = styled.article`
     font-size: 34px;
   }
 
-  @media (max-width: 550px) {
+  @media (max-width: 680px) {
     padding: 20px;
   }
 `;

@@ -7,7 +7,12 @@ import FormAddress from 'components/FormAddress';
 const Forecast: React.FC = () => {
   const [addressLatLong, setAddressLatLong] = useState<AddresLatLong | null>(null);
 
-  function onFindAddress(addressLatLong: AddresLatLong): void {
+  function onFindAddress(addressLatLong: AddresLatLong | null): void {
+    if (!addressLatLong) {
+      setAddressLatLong(null);
+      return;
+    }
+
     setAddressLatLong(addressLatLong);
   }
 

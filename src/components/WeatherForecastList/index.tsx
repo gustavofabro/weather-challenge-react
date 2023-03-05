@@ -1,3 +1,4 @@
+import WeatherForecastListLoader from 'components/WeatherForecastListLoader';
 import { AddresLatLong } from 'domain/addres-lat-long.model';
 import { WeatherForecast } from 'domain/weather-forecast.model';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +10,7 @@ import { ButtonSelectPeriod, ButtonSelectPeriodContainer, Card, CardsContainer, 
 const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) => {
   const [weatherForecasts, setWeatherForecasts] = useState<WeatherForecast[]>();
   const [showPeriodMap, setShowPeriodMap] = useState<{[key: string]: string}>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function setShowPeriodOfDay(dayId: string, periodId: string): void {
     setShowPeriodMap(prev => {
@@ -22,16 +24,6 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
   }
 
   useEffect(() => {
-    async function loadWeatherForecast(): Promise<void> {
-      const weatherForecasts = await getForecastFromLatLong(latLong.lat, latLong.lng);
-
-      setWeatherForecasts(weatherForecasts);
-    }
-
-    loadWeatherForecast();
-  }, [latLong.lat, latLong.lng]);
-
-  useEffect(() => {
     const defaultSelectedPeriods: {[key: string]: string} = {};
 
     weatherForecasts?.forEach(item => {
@@ -42,32 +34,45 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
     setShowPeriodMap(defaultSelectedPeriods);
   }, [weatherForecasts]);
 
+  useEffect(() => {
+    async function loadWeatherForecast(): Promise<void> {
+      const weatherForecasts = await getForecastFromLatLong(latLong.lat, latLong.lng);
+
+      setWeatherForecasts(weatherForecasts);
+    }
+
+    setIsLoading(true);
+    loadWeatherForecast()
+      .finally(() => setIsLoading(false));
+  }, [latLong.lat, latLong.lng]);
+
   return (
     <Container>
-      <CardsContainer>
-        {weatherForecasts?.map(item => {
-          const dayId = item.date.toDateString();
+      {isLoading ? <WeatherForecastListLoader /> :
+        <CardsContainer>
+          {weatherForecasts?.map(item => {
+            const dayId = item.date.toDateString();
 
-          return <Card key={dayId}>
-            <h2>
-              {maskDateToMonthDay(item.date)}
-            </h2>
+            return <Card key={dayId}>
+              <h2>
+                {maskDateToMonthDay(item.date)}
+              </h2>
 
-            <ButtonSelectPeriodContainer>
-              {item.forecasts.map(dayPeriod => (
-                <ButtonSelectPeriod
-                  key={dayPeriod.startTime}
-                  isSelected={showPeriodOfDay(dayId, dayPeriod.startTime)}
-                  onClick={() => setShowPeriodOfDay(dayId, dayPeriod.startTime)}
-                >{dayPeriod.name}</ButtonSelectPeriod>
-              ))}
-            </ButtonSelectPeriodContainer>
+              <ButtonSelectPeriodContainer>
+                {item.forecasts.map(dayPeriod => (
+                  <ButtonSelectPeriod
+                    key={dayPeriod.startTime}
+                    isSelected={showPeriodOfDay(dayId, dayPeriod.startTime)}
+                    onClick={() => setShowPeriodOfDay(dayId, dayPeriod.startTime)}
+                  >{dayPeriod.name}</ButtonSelectPeriod>
+                ))}
+              </ButtonSelectPeriodContainer>
 
-            <WeatherInfoContainer>
-              {item.forecasts.map(dayPeriod =>(
-                <DayPeriod key={dayPeriod.startTime}>
-                  {
-                    showPeriodOfDay(dayId, dayPeriod.startTime) &&
+              <WeatherInfoContainer>
+                {item.forecasts.map(dayPeriod =>(
+                  <DayPeriod key={dayPeriod.startTime}>
+                    {
+                      showPeriodOfDay(dayId, dayPeriod.startTime) &&
                       <>
                         <WeatherInfo>
                           <div>
@@ -81,13 +86,14 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
                           <p>{dayPeriod.shortForecast}</p>
                         </WeatherInfo>
                       </>
-                  }
-                </DayPeriod>
-              ))}
-            </WeatherInfoContainer>
-          </Card>;
-        })}
-      </CardsContainer>
+                    }
+                  </DayPeriod>
+                ))}
+              </WeatherInfoContainer>
+            </Card>;
+          })}
+        </CardsContainer>
+      }
     </Container>
   );
 };

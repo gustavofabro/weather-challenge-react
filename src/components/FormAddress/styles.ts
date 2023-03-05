@@ -7,12 +7,11 @@ export const Container = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
   padding: 5px 15px;
   border-radius: 4px;
   width: 500px;
 
-  @media (max-width: 550px) {
+  @media (max-width: 680px) {
     padding: 0;
     width: 100%;
   }
@@ -75,7 +74,7 @@ export const ButtonSubmit = styled.button<{ isLoading: boolean}>`
     cursor: auto;
   `}
 
-  @media (max-width: 550px) {
+  @media (max-width: 680px) {
     padding: 10px;
     width: 100%;
     margin-left: 0;

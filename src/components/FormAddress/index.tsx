@@ -5,7 +5,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { AddresLatLong } from 'domain/addres-lat-long.model';
 
 interface FormAddressProps {
-  onSubmitAddress: (addressLatLong: AddresLatLong) => void
+  onSubmitAddress: (addressLatLong: AddresLatLong | null) => void
 }
 
 const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
@@ -22,6 +22,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
       return;
     }
 
+    onSubmitAddress(null);
     setIsLoading(true);
     handleGetAddressForecastInfo(address)
       .finally(() => setIsLoading(false));

@@ -9,14 +9,14 @@ export const Container = styled.article`
   align-items: center;
   width: 100%;
   margin-top: 40px;
-
 `;
 
 export const CardsContainer = styled.section`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
+  justify-content: center;
+  gap: 10px;
 `;
 
 export const Card = styled.div`
@@ -27,9 +27,14 @@ export const Card = styled.div`
   padding: 10px;
   box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.25);
   min-height: 190px;
+  width: 325px;
 
   h2 {
     margin-bottom: 15px;
+  }
+
+  @media (max-width: 680px) {
+    width: 100%;
   }
 `;
 
