@@ -19,5 +19,6 @@ export interface WeatherForecastPeriod {
   windSpeed: string,
   windDirection: WindDirection,
   shortForecast: string,
-  detailedForecast: string
+  detailedForecast: string,
+  icon: string
 }

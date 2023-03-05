@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { WiHumidity, WiWindy, WiRain } from 'react-icons/wi';
 import { getForecastFromLatLong } from 'services/us-weather';
 import { maskDateToMonthDay } from 'util/date-helper';
-import { ButtonSelectPeriod, ButtonSelectPeriodContainer, Card, CardsContainer, Container, DayPeriod, WeatherInfo, WeatherInfoContainer } from './styles';
+import { ButtonSelectPeriod, ButtonSelectPeriodContainer, Card, CardsContainer, Container, DayPeriod, ForecastMainInfo, ForecastResume, WeatherInfo, WeatherInfoContainer } from './styles';
 
 const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) => {
   const [weatherForecasts, setWeatherForecasts] = useState<WeatherForecast[]>();
@@ -75,15 +75,20 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
                       showPeriodOfDay(dayId, dayPeriod.startTime) &&
                       <>
                         <WeatherInfo>
-                          <div>
+                          <ForecastMainInfo>
                             <span>{dayPeriod.temperature} °{dayPeriod.temperatureUnit}</span>
                             <div>
                               {dayPeriod.probabilityOfPrecipitation.value && <span>{<WiRain aria-hidden />} {dayPeriod.probabilityOfPrecipitation.value}%</span>}
                               <span>{<WiHumidity aria-hidden />} {dayPeriod.relativeHumidity.value}%</span>
                               <span>{<WiWindy aria-hidden />} {dayPeriod.windSpeed}</span>
                             </div>
-                          </div>
-                          <p>{dayPeriod.shortForecast}</p>
+                          </ForecastMainInfo>
+
+                          <ForecastResume>
+                            <img src={dayPeriod.icon} alt="Forecast icon" aria-hidden/>
+                            <p>{dayPeriod.shortForecast}</p>
+                          </ForecastResume>
+
                         </WeatherInfo>
                       </>
                     }

@@ -6,7 +6,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 const WeatherForecastListLoader: React.FC = () => (
   <Container title="Loading weather forecast">
     <SkeletonTheme baseColor="#eeeeee" highlightColor='#d8d8d8'>
-      <Skeleton inline count={7} style={ { borderRadius: '0.25rem', opacity: 0.6 } } height="190px"></Skeleton>
+      <Skeleton inline count={7} style={ { borderRadius: '0.25rem', opacity: 0.6 } } height="230px"></Skeleton>
     </SkeletonTheme>
   </Container>
 );

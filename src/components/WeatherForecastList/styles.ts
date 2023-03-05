@@ -26,7 +26,7 @@ export const Card = styled.div`
   border-radius: 4px;
   padding: 10px;
   box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.25);
-  min-height: 190px;
+  min-height: 230px;
   width: 325px;
 
   h2 {
@@ -75,32 +75,45 @@ export const DayPeriod = styled.div`
 export const WeatherInfo = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const ForecastMainInfo = styled.div`
+  display: flex;
+  align-items: center;
+
+  div {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+
+    span {
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    span + span {
+      margin-left: 5px;
+    }
+  }
 
   svg {
     font-size: 25px;
     color: #5858d5;
   }
+`;
 
-  div {
-    display: flex;
-    align-items: center;
 
-    div {
-      margin-left: 10px;
-
-      span {
-        display: flex;
-        align-items: center;
-        font-size: 15px;
-      }
-
-      span + span {
-        margin-left: 5px;
-      }
-    }
-  }
+export const ForecastResume = styled.div`
+  display: flex;
+  margin-top: 5px;
 
   p {
-    margin-top: 5px;
+    margin-left: 10px;
+  }
+
+  img {
+    width: 80px;
+    border-radius: 4px;
   }
 `;
