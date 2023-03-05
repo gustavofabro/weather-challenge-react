@@ -1,7 +1,7 @@
 import { WeatherForecastPeriod } from 'domain/weather-forecast-period.model';
 import { WeatherForecast } from 'domain/weather-forecast.model';
 import { GridPoints } from 'domain/weather-grid-points.model';
-import { getGridPointsLocalStorage, saveGridPointsLocalStorage } from 'services/gridpoints-local-cache';
+import { getGridPointsCache, saveGridPointsCache } from 'services/gridpoints-cache';
 import { isSameDate } from 'util/date-helper';
 import { truncDecimal } from 'util/number-helper';
 import api from './us-weather.api';
@@ -20,7 +20,7 @@ async function getForecastFromLatLong(lat: number, lng: number): Promise<Weather
 function _getLatLongGridPoints(lat: number, lng: number): Promise<GridPoints> {
   const latTruncated = truncDecimal(lat);
   const longTruncated = truncDecimal(lng);
-  const cachedGridPoints = getGridPointsLocalStorage({ lat: latTruncated, lng: longTruncated });
+  const cachedGridPoints = getGridPointsCache({ lat: latTruncated, lng: longTruncated });
 
   if (cachedGridPoints) {
     return Promise.resolve(cachedGridPoints);
@@ -30,7 +30,7 @@ function _getLatLongGridPoints(lat: number, lng: number): Promise<GridPoints> {
     const { gridId, gridX, gridY } = response.data.properties;
     const gridPoints= { gridId, gridX, gridY };
 
-    saveGridPointsLocalStorage({ lat: latTruncated, lng: longTruncated }, gridPoints);
+    saveGridPointsCache({ lat: latTruncated, lng: longTruncated }, gridPoints);
 
     return gridPoints;
   });
