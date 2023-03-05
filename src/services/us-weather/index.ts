@@ -33,8 +33,6 @@ function getLatLongGridPoints(lat: number, lng: number): Promise<GridPoints> {
 }
 
 function getForecastFromGrid(gridPoints: { gridId: string, gridX: number, gridY: number }): Promise<WeatherForecastResult> {
-  console.log(`gridpoints/TOP/${gridPoints.gridX},${gridPoints.gridY}/forecast`);
-
   return api
     .get<{ properties: WeatherForecastResult }>(`gridpoints/${gridPoints.gridId}/${gridPoints.gridX},${gridPoints.gridY}/forecast`)
     .then<WeatherForecastResult>(response => {
