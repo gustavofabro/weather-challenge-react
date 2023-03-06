@@ -110,4 +110,26 @@ describe('FormAddress component', () => {
     });
   });
 
+  it('should show an error message when service returns an error', async () => {
+    waitFor(() => {
+      render(<FormAddress onSubmitAddress={mockedOnSubmitAddress} />);
+    });
+
+    const inputElement = screen.getByTestId('input-address');
+
+    mockedGetAdressLatLong.mockRejectedValue({});
+
+    fireEvent.change(inputElement, {
+      target: {
+        value: '500 Yale Avenue North, Seattle, WA 98109'
+      }
+    });
+
+    screen.getByTestId('button-submit').click();
+
+    await waitFor(() => {
+      expect(screen.queryByText('Error retrieving your location, please try again in a few moments')).toBeInTheDocument();
+    });
+  });
+
 });

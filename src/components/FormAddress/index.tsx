@@ -12,6 +12,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
   const [address, setAddress] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [addressNotFound, setAddressNotFound] = useState<boolean>(false);
+  const [apiErrorCommunication, setApiErrorCommunication] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function onSubmit(event: FormEvent): Promise<void> {
@@ -29,14 +30,18 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
   }
 
   async function handleGetAddressForecastInfo(address: string): Promise<void> {
-    const latLongInfo = await getAdressLatLong(address);
+    try {
+      const latLongInfo = await getAdressLatLong(address);
 
-    if (!latLongInfo) {
-      setAddressNotFound(true);
-      return;
+      if (!latLongInfo) {
+        setAddressNotFound(true);
+        return;
+      }
+
+      onSubmitAddress(latLongInfo);
+    } catch {
+      setApiErrorCommunication(true);
     }
-
-    onSubmitAddress(latLongInfo);
   }
 
   function isFormValid(): boolean {
@@ -63,6 +68,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
 
         {inputHasError(address) && <span role='alert'>Required field</span>}
         {!inputHasError(address) && addressNotFound && <span role='alert'>Address not found, please make sure you typed it correctly</span>}
+        {!inputHasError(address) && apiErrorCommunication && <span role='alert'>Error retrieving your location, please try again in a few moments</span>}
       </AddressInputContainer>
 
       <ButtonSubmit type='submit' isLoading={isLoading} disabled={isLoading} data-testid="button-submit">
