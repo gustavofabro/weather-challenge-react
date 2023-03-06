@@ -46,7 +46,7 @@ export const ButtonSelectPeriod = styled.button<{ isSelected: boolean }>`
   border: 0;
   border-radius: 4px;
   padding: 5px;
-  background-color: #247ba0;
+  background-color: #a5cad9;
   color: #FFFFFF;
   font-size: 14px;
 
@@ -55,7 +55,7 @@ export const ButtonSelectPeriod = styled.button<{ isSelected: boolean }>`
   }
 
   ${props => props.isSelected && css`
-    background-color: #006494;
+    background-color: #369bcb;
   `}
 `;
 
