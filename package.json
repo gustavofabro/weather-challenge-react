@@ -48,5 +48,9 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-ban": "^1.6.0",
     "eslint-plugin-unused-imports": "^2.0.0"
+  },
+  "engines": {
+    "npm": ">=6",
+    "node": ">=14"
   }
 }
