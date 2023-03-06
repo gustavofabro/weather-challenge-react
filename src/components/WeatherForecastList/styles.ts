@@ -30,7 +30,7 @@ export const Card = styled.div`
   width: 325px;
 
   h2 {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   }
 
   @media (max-width: 680px) {
@@ -40,6 +40,7 @@ export const Card = styled.div`
 
 export const ButtonSelectPeriodContainer = styled.div`
   display: flex;
+  margin-top: 10px;
 `;
 
 export const ButtonSelectPeriod = styled.button<{ isSelected: boolean }>`

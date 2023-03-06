@@ -64,7 +64,8 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
                 {maskDateToMonthDay(item.date)}
               </h2>
 
-              <ButtonSelectPeriodContainer>
+
+              {item.forecasts.length > 1 && <ButtonSelectPeriodContainer>
                 {item.forecasts.map(dayPeriod => (
                   <ButtonSelectPeriod
                     key={dayPeriod.startTime}
@@ -72,7 +73,7 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
                     onClick={() => setShowPeriodOfDay(dayId, dayPeriod.startTime)}
                   >{dayPeriod.name}</ButtonSelectPeriod>
                 ))}
-              </ButtonSelectPeriodContainer>
+              </ButtonSelectPeriodContainer>}
 
               <WeatherInfoContainer>
                 {item.forecasts.map(dayPeriod =>(
