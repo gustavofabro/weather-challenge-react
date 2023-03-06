@@ -19,8 +19,8 @@ Informs the weather forecast of the address entered for the next 7 days.
 
 ### With packages locally
 
- - Run `npm install` | `yarn install` to install all dependencies.
- - Run `npm start`   | `yarn run` to run the app locally.
+ - Run `npm install` to install all dependencies.
+ - Run `npm start` to run the app locally.
  - You can find the project running on `localhost:3000`.
 
 ## Running tests
