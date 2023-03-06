@@ -3,6 +3,7 @@ import { getAdressLatLong } from 'services/geocoding-census';
 import { AddressInputContainer, ButtonSubmit, Container } from './styles';
 import { FaSpinner } from 'react-icons/fa';
 import { AddresLatLong } from 'domain/addres-lat-long.model';
+import useErrorMessage from 'hooks/useErrorMessage';
 
 interface FormAddressProps {
   onSubmitAddress: (addressLatLong: AddresLatLong | null) => void
@@ -12,8 +13,8 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
   const [address, setAddress] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [addressNotFound, setAddressNotFound] = useState<boolean>(false);
-  const [apiErrorCommunication, setApiErrorCommunication] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { error, updateErrorMessage } = useErrorMessage();
 
   async function onSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
@@ -31,6 +32,8 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
 
   async function handleGetAddressForecastInfo(address: string): Promise<void> {
     try {
+      updateErrorMessage(null);
+
       const latLongInfo = await getAdressLatLong(address);
 
       if (!latLongInfo) {
@@ -40,7 +43,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
 
       onSubmitAddress(latLongInfo);
     } catch {
-      setApiErrorCommunication(true);
+      updateErrorMessage('Error retrieving your location, please try again in a few moments');
     }
   }
 
@@ -68,7 +71,7 @@ const FormAddress: React.FC<FormAddressProps> = ({ onSubmitAddress }) => {
 
         {inputHasError(address) && <span role='alert'>Required field</span>}
         {!inputHasError(address) && addressNotFound && <span role='alert'>Address not found, please make sure you typed it correctly</span>}
-        {!inputHasError(address) && apiErrorCommunication && <span role='alert'>Error retrieving your location, please try again in a few moments</span>}
+        {!inputHasError(address) && error && <span role='alert'>{error}</span>}
       </AddressInputContainer>
 
       <ButtonSubmit type='submit' isLoading={isLoading} disabled={isLoading} data-testid="button-submit">

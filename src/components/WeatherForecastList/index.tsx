@@ -1,6 +1,7 @@
 import WeatherForecastListLoader from 'components/WeatherForecastListLoader';
 import { AddresLatLong } from 'domain/addres-lat-long.model';
 import { WeatherForecast } from 'domain/weather-forecast.model';
+import useErrorMessage from 'hooks/useErrorMessage';
 import React, { useEffect, useState } from 'react';
 import { WiHumidity, WiWindy, WiRain } from 'react-icons/wi';
 import { getForecastFromLatLong } from 'services/us-weather';
@@ -11,6 +12,7 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
   const [weatherForecasts, setWeatherForecasts] = useState<WeatherForecast[]>();
   const [showPeriodMap, setShowPeriodMap] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { updateErrorMessage } = useErrorMessage();
 
   function setShowPeriodOfDay(dayId: string, periodId: string): void {
     setShowPeriodMap(prev => {
@@ -36,15 +38,19 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
 
   useEffect(() => {
     async function loadWeatherForecast(): Promise<void> {
-      const weatherForecasts = await getForecastFromLatLong(latLong.lat, latLong.lng);
+      try {
+        const weatherForecasts = await getForecastFromLatLong(latLong.lat, latLong.lng);
 
-      setWeatherForecasts(weatherForecasts);
+        setWeatherForecasts(weatherForecasts);
+      } catch {
+        updateErrorMessage('Error retrieving weather forecast, please try again in a few moments');
+      }
     }
 
     setIsLoading(true);
     loadWeatherForecast()
       .finally(() => setIsLoading(false));
-  }, [latLong.lat, latLong.lng]);
+  }, [latLong.lat, latLong.lng, updateErrorMessage]);
 
   return (
     <Container>
@@ -102,3 +108,4 @@ const WeatherForecastList: React.FC<{ latLong: AddresLatLong }> = ({ latLong }) 
 };
 
 export default WeatherForecastList;
+
