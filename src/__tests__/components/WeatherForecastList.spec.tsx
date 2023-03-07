@@ -6,13 +6,20 @@ import { AddresLatLong } from 'domain/addres-lat-long.model';
 import { WeatherForecast } from 'domain/weather-forecast.model';
 import { TemperatureUnit } from 'domain/temperature-unit.enum';
 import { WindDirection } from 'domain/wind-direction.enum';
+import useErrorMessage from 'hooks/useErrorMessage';
 
 const mockedGetForecastFromLatLong = getForecastFromLatLong as jest.Mock;
+const mockedUpdateErrorMessage = jest.fn();
+const mockedUseErrorMessage = useErrorMessage as jest.Mock;
 
 jest.mock('services/us-weather', () => {
   return {
     getForecastFromLatLong: jest.fn()
   };
+});
+
+jest.mock('hooks/useErrorMessage', () => {
+  return jest.fn();
 });
 
 const weatherForecasts: WeatherForecast[] = [{
@@ -69,6 +76,12 @@ describe('WeatherForecastList component', () => {
 
   beforeEach(() => {
     mockedGetForecastFromLatLong.mockClear();
+    mockedUpdateErrorMessage.mockClear();
+
+    mockedUseErrorMessage.mockImplementation(() => ({
+      error: '',
+      updateErrorMessage: mockedUpdateErrorMessage
+    }));
   });
 
   it('should call getForecastFromLatLong with the informed lat/long', async () => {
@@ -97,6 +110,19 @@ describe('WeatherForecastList component', () => {
       const weatherForecastCards = screen.queryAllByTestId('weather-forescast-card');
 
       expect(weatherForecastCards.length).toBe(weatherForecasts.length);
+    });
+  });
+
+  it('should call update error message context when service returns an error', async () => {
+    const latLongInfo: AddresLatLong = { lat: 123, lng: 321 };
+    mockedGetForecastFromLatLong.mockRejectedValue({});
+
+    waitFor(() => {
+      render(<WeatherForecastList latLong={latLongInfo} />);
+    });
+
+    await waitFor(() => {
+      expect(mockedUpdateErrorMessage).toBeCalledWith('Error retrieving weather forecast, please try again in a few moments');
     });
   });
 });

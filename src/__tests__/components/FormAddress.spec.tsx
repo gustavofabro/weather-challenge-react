@@ -3,9 +3,12 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import FormAddress from 'components/FormAddress';
 import { getAdressLatLong } from 'services/geocoding-census';
 import { AddresLatLong } from 'domain/addres-lat-long.model';
+import useErrorMessage from 'hooks/useErrorMessage';
 
 const mockedOnSubmitAddress = jest.fn();
 const mockedGetAdressLatLong = getAdressLatLong as jest.Mock;
+const mockedUpdateErrorMessage = jest.fn();
+const mockedUseErrorMessage = useErrorMessage as jest.Mock;
 
 jest.mock('services/geocoding-census', () => {
   return {
@@ -13,11 +16,21 @@ jest.mock('services/geocoding-census', () => {
   };
 });
 
+jest.mock('hooks/useErrorMessage', () => {
+  return jest.fn();
+});
+
 describe('FormAddress component', () => {
 
   beforeEach(() => {
     mockedOnSubmitAddress.mockClear();
     mockedGetAdressLatLong.mockClear();
+    mockedUpdateErrorMessage.mockClear();
+
+    mockedUseErrorMessage.mockImplementation(() => ({
+      error: '',
+      updateErrorMessage: mockedUpdateErrorMessage
+    }));
   });
 
   it('should call getAdressLatLong with the submited address', async () => {
@@ -110,7 +123,7 @@ describe('FormAddress component', () => {
     });
   });
 
-  it('should show an error message when service returns an error', async () => {
+  it('should update error message context when service returns an error', async () => {
     waitFor(() => {
       render(<FormAddress onSubmitAddress={mockedOnSubmitAddress} />);
     });
@@ -128,7 +141,7 @@ describe('FormAddress component', () => {
     screen.getByTestId('button-submit').click();
 
     await waitFor(() => {
-      expect(screen.queryByText('Error retrieving your location, please try again in a few moments')).toBeInTheDocument();
+      expect(mockedUpdateErrorMessage).toBeCalledWith('Error retrieving your location, please try again in a few moments');
     });
   });
 
